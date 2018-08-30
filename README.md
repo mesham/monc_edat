@@ -15,7 +15,7 @@ MONC can either be built with GCC version 5 or the Cray compiler (8.4.1 tested.)
 ## Executing MONC
 The built executable will be `build/bin/monc_driver_edat.exe` for the EDAT version and `build/bin/monc_driver.exe` for the original version. You can launch MONC with the `mpiexec` call, i.e. `mpiexec -np 2 ./build/bin/monc_driver_edat.exe --config=testcases/stratus/fire_sc.mcf` which will execute MONC on two processes using the stratus cloud test-case. 
 
-There is also a PBS submission script for submission to larger scale machines
+There is also a PBS submission script (`submonc.pbs`) for submission to larger scale machines
 
 ## Configuration
 We have run this with the stratus test-case of testcases/stratus/fire_sc.mcf . Typically this will use `io/io_cfg_files/data_write_1file.xml` which is what we used for the benchmarking, however other smaller configurations are included for local runs (such as `io/io_cfg_files/edat_test.xml`) Additionally in the IO configuration directory there is a script, `duplicate_for_benchmarking.py` which will duplicate the data entries requested at a specific timestep, this enables us to request large amount of data without manually replicating lines in the file. Additionally there is an environment variable, `MONC_BENCHMARK_NUMS` which will duplicate all the data sent from the MONC computational core to the IO server for each request point any number of times (it is fine not to set this, the default is 1.)

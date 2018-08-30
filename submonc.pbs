@@ -1,0 +1,25 @@
+#!/bin/bash --login
+#PBS -N edat
+#PBS -l select=4
+#PBS -l walltime=04:00:00
+#PBS -j oe
+#PBS -A budget
+
+echo Starting job
+
+# Make sure any symbolic links are resolved to absolute path
+export PBS_O_WORKDIR=$(readlink -f $PBS_O_WORKDIR)
+
+# Change to the direcotry that the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Set the number of threads to 1
+#   This prevents any system libraries from automatically 
+#   using threading.
+export OMP_NUM_THREADS=1
+export EDAT_NUM_WORKERS=2
+export EDAT_ENABLE_BRIDGE=true
+export EDAT_PROGRESS_THREAD=true
+export MONC_BENCHMARK_NUMS=20
+
+aprun -n 96 -N 24 -d 2 -j 2 -cc depth  build/bin/monc_driver.exe --config=testcases/stratus/fire_sc.mcf &> output
